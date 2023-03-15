@@ -1,0 +1,25 @@
+version: '3.8'
+services:
+
+  server: 
+    restart: always
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
+      - ./data:/app/data
+    build: server
+    network_mode: "host"
+    environment:
+      - TZ=Europe/Moscow
+      - CALLS_PATH=/app/data
+      - TOKEN_TEST=
+      - TOKEN=
+      - MRMSUPPORTBOT_AUTH_LOGIN=
+      - MRMSUPPORTBOT_AUTH_PASSWORD=
+      - CHAT_ID=-1001984219054
+    # log limit
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
