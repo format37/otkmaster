@@ -76,7 +76,8 @@ def main():
             logger.info("Date: {}, Phone number: {}".format(date, phone_number))
 
             # If date older than a day
-            if datetime.datetime.strptime(date, "%Y-%m-%d_%H-%M-%S") < datetime.datetime.now() - datetime.timedelta(days=1):
+            # if datetime.datetime.strptime(date, "%Y-%m-%d_%H-%M-%S") < datetime.datetime.now() - datetime.timedelta(days=1):
+            if datetime.datetime.strptime(date, "%Y-%m-%d_%H-%M") < datetime.datetime.now() - datetime.timedelta(days=1):
                 logger.info("Date older than a day, skipping: "+file)
             else:
             
