@@ -43,7 +43,7 @@ def mrmsupport_bot_user_info(user_id, phone, clientPath):
 
 def main():
 
-    test = True
+    test = int(os.environ.get("TEST", 0)
 
     logger.info("Server started")
 
