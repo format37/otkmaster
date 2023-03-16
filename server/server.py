@@ -73,6 +73,10 @@ def main():
             # date, phone_number = re.findall(r"(\d{4}-\d{2}-\d{2}_\d{2}-\d{2}-\d{2})_(\d+)", file)[0]
             # filename sample: 2023-03-15_16-03_4952878442
             date, phone_number = re.findall(r"(\d{4}-\d{2}-\d{2}_\d{2}-\d{2})_(\d+)", file)[0]
+            if len(phone_number) > 10:
+                # get right 10 digits
+                logger.info("Cropping the phone number: "+phone_number+" to 10 digits: "+phone_number[-10:])
+                phone_number = phone_number[-10:]
             logger.info("Date: {}, Phone number: {}".format(date, phone_number))
 
             # If date older than a day
