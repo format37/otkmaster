@@ -72,38 +72,42 @@ def main():
             # extract the date and phone number from the filename
             # date, phone_number = re.findall(r"(\d{4}-\d{2}-\d{2}_\d{2}-\d{2}-\d{2})_(\d+)", file)[0]
             # filename sample: 2023-03-15_16-03_4952878442
-            date, phone_number = re.findall(r"(\d{4}-\d{2}-\d{2}_\d{2}-\d{2})_(\d+)", file)[0]
-            if len(phone_number) > 10:
-                # get right 10 digits
-                logger.info("Cropping the phone number: "+phone_number+" to 10 digits: "+phone_number[-10:])
-                phone_number = phone_number[-10:]
-            logger.info("Date: {}, Phone number: {}".format(date, phone_number))
+            try:
+                date, phone_number = re.findall(r"(\d{4}-\d{2}-\d{2}_\d{2}-\d{2})_(\d+)", file)[0]
+                if len(phone_number) > 10:
+                    # get right 10 digits
+                    logger.info("Cropping the phone number: "+phone_number+" to 10 digits: "+phone_number[-10:])
+                    phone_number = phone_number[-10:]
+                logger.info("Date: {}, Phone number: {}".format(date, phone_number))
 
-            # If date older than a day
-            # if datetime.datetime.strptime(date, "%Y-%m-%d_%H-%M-%S") < datetime.datetime.now() - datetime.timedelta(days=1):
-            if datetime.datetime.strptime(date, "%Y-%m-%d_%H-%M") < datetime.datetime.now() - datetime.timedelta(days=1):
-                logger.info("Date older than a day, skipping: "+file)
-            else:
-            
-                # Get user information
-                reply = '[\n'
-                results = mrmsupport_bot_user_info('', phone_number, clientPath)
-                
-                if len(results) == 0:
-                    reply = 'User not found: '+phone_number
+                # If date older than a day
+                # if datetime.datetime.strptime(date, "%Y-%m-%d_%H-%M-%S") < datetime.datetime.now() - datetime.timedelta(days=1):
+                if datetime.datetime.strptime(date, "%Y-%m-%d_%H-%M") < datetime.datetime.now() - datetime.timedelta(days=1):
+                    logger.info("Date older than a day, skipping: "+file)
                 else:
-                    reply += ',\n'.join(results)
-                    reply += '\n]'
-                # logger.info('Replying in '+str(message.chat.id))
-                logger.info('Reply: '+reply)
-                # bot.reply_to(message, reply + '\n]')
+                
+                    # Get user information
+                    reply = '[\n'
+                    results = mrmsupport_bot_user_info('', phone_number, clientPath)
+                    
+                    if len(results) == 0:
+                        reply = 'User not found: '+phone_number
+                    else:
+                        reply += ',\n'.join(results)
+                        reply += '\n]'
+                    # logger.info('Replying in '+str(message.chat.id))
+                    logger.info('Reply: '+reply)
+                    # bot.reply_to(message, reply + '\n]')
 
-                # Send the reply to the telegram chat
-                chat_id = os.environ.get("CHAT_ID")
-                # Url
-                url = "https://api.telegram.org/bot{}/sendMessage?chat_id={}&text={}".format(token, chat_id, reply)
-                # Send the request
-                r = requests.get(url)
+                    # Send the reply to the telegram chat
+                    chat_id = os.environ.get("CHAT_ID")
+                    # Url
+                    url = "https://api.telegram.org/bot{}/sendMessage?chat_id={}&text={}".format(token, chat_id, reply)
+                    # Send the request
+                    r = requests.get(url)
+            except Exception as e:
+                logger.error("File: "+file+" error: "+str(e))
+                
 
             # Join the file path and file name
             file_path = os.path.join(calls_path, file)
