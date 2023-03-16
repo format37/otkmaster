@@ -70,7 +70,9 @@ def main():
         for file in files:
             # filename sample: 2023-03-14_17-41-32_9998451900
             # extract the date and phone number from the filename
-            date, phone_number = re.findall(r"(\d{4}-\d{2}-\d{2}_\d{2}-\d{2}-\d{2})_(\d+)", file)[0]
+            # date, phone_number = re.findall(r"(\d{4}-\d{2}-\d{2}_\d{2}-\d{2}-\d{2})_(\d+)", file)[0]
+            # filename sample: 2023-03-15_16-03_4952878442
+            date, phone_number = re.findall(r"(\d{4}-\d{2}-\d{2}_\d{2}-\d{2})_(\d+)", file)[0]
             logger.info("Date: {}, Phone number: {}".format(date, phone_number))
 
             # If date older than a day
